@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import useProducts from '../../../hooks/useProducts';
 import { addToDb, getStoredCart } from '../../../utilities/fakedb';
 import Cart from '../../Cart/Cart';
 import Product from '../../Product/Product';
 import './Shop.css'
 
 const Shop = () => {
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useProducts();
+    // const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
-    useEffect(() => {
-        console.log('product load first before fetch');
-        fetch('products.json')
-            .then(res => res.json())
-            .then(data => {
-                setProducts(data);
-                console.log('product loaded');
-            })
-    }, []);
+    // useEffect(() => {
+    //     // console.log('product load first before fetch');
+    //     fetch('products.json')
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             setProducts(data);
+    //             console.log('product loaded');
+    //         })
+    // }, []);
 
     useEffect(() => {
-        console.log('loca storage first line', products);
+        // console.log('loca storage first line', products);
         const storedCart = getStoredCart();
         const savedCart = [];
         for (const id in storedCart) {
@@ -62,7 +65,11 @@ const Shop = () => {
                 }
             </div>
             <div className="cart-container">
-                <Cart cart={cart}></Cart>
+                <Cart cart={cart}>
+                    <Link to="/orders">
+                        <button>Review Order</button>
+                    </Link>
+                </Cart>
             </div>
         </div>
     );
